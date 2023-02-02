@@ -5,42 +5,49 @@
 %%
 %%  Adapted by Trevor Campbell for personal use.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{shortex}
 
-
-\usepackage{xifthen}
-\usepackage{xstring}
-\usepackage{xspace} % used at the end of macros to automatically determine whether spaces should be eaten or not
-\usepackage[mathscr]{eucal} % use euler script instead of mathcal
-\usepackage{dsfont} % doublestroke fonts (for things like reals, nats, complex numbers, etc)
-\usepackage[nice]{nicefrac} % nice fraction typesetting, compact symbols for 1/2, etc
-\usepackage[usenames]{color} % for using colored text
-\usepackage{hyperref} % typical linking package
-\usepackage{amsmath,amssymb,amsthm,bm,bbm,amsfonts,mathtools,thmtools} % math
-\usepackage[capitalize,sort,compress]{cleveref} % nice reference package for automatically choosing names for references
+\RequirePackage{xifthen}
+\RequirePackage{xstring}
+\RequirePackage{xspace} % used at the end of macros to automatically determine whether spaces should be eaten or not
+\RequirePackage[mathscr]{eucal} % use euler script instead of mathcal
+\RequirePackage{dsfont} % doublestroke fonts (for things like reals, nats, complex numbers, etc)
+\RequirePackage[nice]{nicefrac} % nice fraction typesetting, compact symbols for 1/2, etc
+\RequirePackage{amsmath,amssymb,amsthm,bm,bbm,amsfonts,mathtools,thmtools} % math
+\RequirePackage[capitalize,sort,compress]{cleveref} % nice reference package for automatically choosing names for references
 % ensure that crefs appear correctly in bookmarks 
-\usepackage{crossreftools} % may not be available when uploading to arXiv 
+\RequirePackage{crossreftools} % may not be available when uploading to arXiv 
 \pdfstringdefDisableCommands{%
     \let\Cref\crtCref
     \let\cref\crtcref
 }
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
-\usepackage{import, subfiles} % packages for using subfile/folder structure
-\usepackage{url} % nice URL typesetting
-\usepackage{algpseudocode, algorithm} % typical alg typesetting packages
-\usepackage{graphicx} % typical graphics package for figures
-\usepackage{multirow} % multirow tables
-\usepackage{wrapfig} % figures wrapped into the text
-\usepackage{caption,subcaption} % package for sub-environments (figs, tables, etc)
-\usepackage{microtype} % microtypesetting improvements for latex
-\usepackage{booktabs} % professional quality tables
+\RequirePackage{import, subfiles} % packages for using subfile/folder structure
+\RequirePackage{url} % nice URL typesetting
+\RequirePackage{algpseudocode, algorithm} % typical alg typesetting packages
+\RequirePackage{graphicx} % typical graphics package for figures
+\RequirePackage{multirow} % multirow tables
+\RequirePackage{wrapfig} % figures wrapped into the text
+\RequirePackage{caption,subcaption} % package for sub-environments (figs, tables, etc)
+\RequirePackage{microtype} % microtypesetting improvements for latex
+\RequirePackage{booktabs} % professional quality tables
 
-\usepackage{xargs}
+\RequirePackage{xargs}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Package Options Declarations %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %hyperref format/color/etc
-\DeclareOption{colorhypersetup}{\hypersetup{colorlinks=true, allcolors=SubtleColor, pdfborder={0 0 0}}}
-\DeclareOption{blackhypersetup}{\hypersetup{colorlinks=false, allcolors=black, pdfborder={0 0 0}}}
+\DeclareOption{colorhypersetup}{
+	\RequirePackage{hyperref} % typical linking package
+	\hypersetup{colorlinks=true, allcolors=SubtleColor, pdfborder={0 0 0}}
+}
+
+\DeclareOption{blackhypersetup}{
+	\RequirePackage{hyperref} % typical linking package
+	\hypersetup{colorlinks=false, allcolors=black, pdfborder={0 0 0}}
+}
+
 \def\boldorbar{\bar}
 \DeclareOption{bbold}{\def\boldorbar{\bm}}
 \DeclareOption{bbar}{\def\boldorbar{\bar}}
@@ -52,58 +59,6 @@
 \ProcessOptions
 
 \ifuseautonum \usepackage{autonum} \fi
-
-
-%%%%%%%%%%%%%%%%%%
-%%% Commenting %%%
-%%%%%%%%%%%%%%%%%%
-
-%% NA: needs attention (rough writing whose correctness needs to be verified)
-%% TBD: instructions for how to fix a gap ("Describe the propagation by ...")
-%% PROBLEM: bug or missing crucial bit
-
-%% use \fXXX versions of these macros to put additional explanation into a footnote (in the margin).
-%% The idea is that we don't want to interrupt the flow of the paper or make it
-%% impossible to read because there are a bunch of comments.
-
-%% NA's (and TBDs, those less crucially) should be written so
-%% that they flow with the text.
-
-\definecolor{WowColor}{rgb}{.75,0,.75}
-\definecolor{SubtleColor}{rgb}{0,0,.50}
-
-% inline
-\newcommand{\NA}[1]{\textcolor{SubtleColor}{ {\tiny \bf ($\star$)} #1}}
-\newcommand{\LATER}[1]{\textcolor{SubtleColor}{ {\tiny \bf ($\dagger$)} #1}}
-\newcommand{\TBD}[1]{\textcolor{SubtleColor}{ {\tiny \bf (!)} #1}}
-\newcommand{\PROBLEM}[1]{\textcolor{WowColor}{ {\bf (!!)} {\bf #1}}}
-
-% as margin notes
-\newcounter{margincounter}
-\newcommand{\displaycounter}{{\arabic{margincounter}}}
-\newcommand{\incdisplaycounter}{{\stepcounter{margincounter}\arabic{margincounter}}}
-
-\newcommand{\fTBD}[1]{\textcolor{SubtleColor}{$\,^{(\incdisplaycounter)}$}\marginpar{\tiny\textcolor{SubtleColor}{ {\tiny $(\displaycounter)$} #1}}}
-
-\newcommand{\fPROBLEM}[1]{\textcolor{WowColor}{$\,^{((\incdisplaycounter))}$}\marginpar{\tiny\textcolor{WowColor}{ {\bf $\mathbf{((\displaycounter))}$} {\bf #1}}}}
-
-\newcommand{\fLATER}[1]{\textcolor{SubtleColor}{$\,^{(\incdisplaycounter\dagger)}$}\marginpar{\tiny\textcolor{SubtleColor}{ {\tiny $(\displaycounter\dagger)$} #1}}}
-
-\DeclareRobustCommand{\suppresscomments}{
-% For submission, make all render blank.
-\renewcommand{\LATER}[1]{}
-\renewcommand{\fLATER}[1]{}
-\renewcommand{\TBD}[1]{}
-\renewcommand{\fTBD}[1]{}
-\renewcommand{\PROBLEM}[1]{}
-\renewcommand{\fPROBLEM}[1]{}
-\renewcommand{\NA}[1]{##1}  %% Note, NA's pass through!
-}
-
-% shorten paper -- the higher shortenval, the shorter the paper
-\newcommand{\setshortness}[1]{\def\shortnessval{#1}}
-\setshortness{0}
-\newcommand{\condcomment}[2][1]{\ifnum#1>\shortnessval #2\fi}
 
 %%%%%%%%%%%%%
 %%% Links %%%
@@ -267,6 +222,7 @@
 \newcommand{\sgn}{\operatorname{sgn}} % sign function
 \newcommand{\theset}[1]{\lbrace #1 \rbrace}
 \newcommand{\sn}[2]{\ensuremath{#1\!\times\!10^{#2}}}	% #1 x 10^{#2}
+\newcommand{\imag}{\ensuremath{\mathrm{i}}} % imaginary
 
 \newcommand{\st}{\,:\,}
 \newcommand{\given}{\mid}
@@ -385,7 +341,7 @@
 \newcommand{\pushfwdmeas}[2]{{{#1}_{\sharp} #2}}
 
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern4mu{#1#2}}}
-\newcommand\indep{\protect\mathpalette{\protect\independenT}{\perp}} % independent
+\providecommand\indep{\protect\mathpalette{\protect\independenT}{\perp}} % independent
 
 % parametric distributions
 \newcommand{\distNamed}[1]{{\sf{#1}}}
@@ -633,6 +589,9 @@
 \charalphabetmacro{mf}{\mathfrak}{\upperCaseRomanLetters}
 \charalphabetmacro{mf}{\mathfrak}{\lowerCaseRomanLetters}
 
+% Mathbb shortcuts
+\charalphabetmacro{bb}{\mathbb}{\upperCaseRomanLetters}
+\charalphabetmacro{bb}{\mathbb}{\lowerCaseRomanLetters}
 
 % Bold Mathfrak shortcuts
 \newcommand{\boldmathfrak}[1]{\mathbf{\mathfrak{#1}}}
