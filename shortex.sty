@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Latex Shortcuts and Redefinitions
 %%
-%%  Original by Jonathan Huggins, with thanks to Dan Roy and Ryan Adams for allowing the use many of their definitions.
+%%  Original by Jonathan Huggins, with thanks to Dan Roy and Ryan Adams for allowing the use of many of their definitions.
 %%
 %%  Adapted by Trevor Campbell for personal use.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,6 +14,8 @@
 \RequirePackage[mathscr]{eucal} % use euler script instead of mathcal
 \RequirePackage{dsfont} % doublestroke fonts (for things like reals, nats, complex numbers, etc)
 \RequirePackage[nice]{nicefrac} % nice fraction typesetting, compact symbols for 1/2, etc
+\RequirePackage{hyperref}
+
 \RequirePackage{amsmath,amssymb,amsthm,bm,bbm,amsfonts,mathtools,thmtools} % math
 \RequirePackage[capitalize,sort,compress]{cleveref} % nice reference package for automatically choosing names for references
 % ensure that crefs appear correctly in bookmarks 
@@ -34,31 +36,41 @@
 \RequirePackage{booktabs} % professional quality tables
 
 \RequirePackage{xargs}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Package Options Declarations %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%hyperref format/color/etc
-\DeclareOption{colorhypersetup}{
-	\RequirePackage{hyperref} % typical linking package
-	\hypersetup{colorlinks=true, allcolors=SubtleColor, pdfborder={0 0 0}}
-}
 
-\DeclareOption{blackhypersetup}{
-	\RequirePackage{hyperref} % typical linking package
-	\hypersetup{colorlinks=false, allcolors=black, pdfborder={0 0 0}}
-}
+\newif\ifusecolorhypersetup
+\usecolorhypersetupfalse
+\DeclareOption{colorhypersetup}{\usecolorhypersetuptrue}
+
+\newif\ifuseblackhypersetup
+\useblackhypersetupfalse
+\DeclareOption{blackhypersetup}{\useblackhypersetuptrue}
 
 \def\boldorbar{\bar}
 \DeclareOption{bbold}{\def\boldorbar{\bm}}
 \DeclareOption{bbar}{\def\boldorbar{\bar}}
-%autonum
+
 \newif\ifuseautonum
 \useautonumfalse
 \DeclareOption{autonum}{\useautonumtrue}
 
-\ProcessOptions
+%\ExecuteOptions
+\ProcessOptions*
 
-\ifuseautonum \usepackage{autonum} \fi
+\ifusecolorhypersetup
+	\RequirePackage{hyperref}
+	\hypersetup{colorlinks=true, allcolors=SubtleColor, pdfborder={0 0 0}}
+\fi
+
+\ifuseblackhypersetup
+	\RequirePackage{hyperref}
+	\hypersetup{colorlinks=false, allcolors=black, pdfborder={0 0 0}}
+\fi
+
+\ifuseautonum \RequirePackage{autonum} \fi
 
 %%%%%%%%%%%%%
 %%% Links %%%
